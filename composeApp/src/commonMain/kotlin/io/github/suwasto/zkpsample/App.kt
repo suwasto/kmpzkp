@@ -10,11 +10,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kmpzkp.composeapp.generated.resources.Res
+import kmpzkp.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
-import zkpsample.composeapp.generated.resources.Res
-import zkpsample.composeapp.generated.resources.compose_multiplatform
 
 @Composable
 @Preview
