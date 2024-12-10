@@ -13,9 +13,10 @@ application {
 
 dependencies {
     implementation(projects.shared)
+    implementation(projects.zkpschnoorproofs)
     implementation(libs.logback)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
-    testImplementation(libs.ktor.server.tests)
+    implementation(project(":zkpschnoorproofs"))
     testImplementation(libs.kotlin.test.junit)
 }

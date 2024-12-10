@@ -29,11 +29,26 @@ kotlin {
             xcf.add(this)
             isStatic = true
         }
+        it.compilations.getByName("main") {
+            val CommonCrypto by cinterops.creating {
+                // Path to the .def file
+                definitionFile.set(project.file("src/nativeInterop/cinterop/CommonCrypto.def"))
+
+                includeDirs("/usr/include", "/usr/include/CommonCrypto")
+            }
+        }
+        it.binaries.all {
+            linkerOpts("-L${projectDir}/build/fat-framework", "-framework", "zkpschnoorproofs")
+        }
     }
+
+    jvm()
 
     sourceSets {
         commonMain.dependencies {
             //put your multiplatform dependencies here
+            implementation(libs.bignum)
+            implementation(libs.kotlinx.coroutines.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
