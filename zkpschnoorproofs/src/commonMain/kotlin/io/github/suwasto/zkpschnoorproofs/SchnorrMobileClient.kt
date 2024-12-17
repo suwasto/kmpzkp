@@ -3,10 +3,8 @@ package io.github.suwasto.zkpschnoorproofs
 import SafePrimeGenerator
 import SafePrimeGenerator.generateRandomNonce
 import com.ionspin.kotlin.bignum.integer.BigInteger
-import com.ionspin.kotlin.bignum.integer.BigInteger.Companion.ONE
 import com.ionspin.kotlin.bignum.integer.Sign
 import com.ionspin.kotlin.bignum.integer.toBigInteger
-import kotlin.random.Random
 
 object SchnorrMobileClient {
 
@@ -23,7 +21,7 @@ object SchnorrMobileClient {
 
     private fun derivePrivateKey(username: String, password: String): BigInteger {
         val keyDerivation = KeyDerivationFactory.create()
-        val hash = keyDerivation.hashSHA256(username, password)
+        val hash = keyDerivation.hashSHA256("$username$password")
         return BigInteger.fromByteArray(hash, Sign.POSITIVE).mod(SafePrimeGenerator.PRIME_2048)
     }
 

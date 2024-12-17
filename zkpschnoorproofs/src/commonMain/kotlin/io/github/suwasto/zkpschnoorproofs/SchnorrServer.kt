@@ -2,6 +2,8 @@ package io.github.suwasto.zkpschnoorproofs
 
 import SafePrimeGenerator
 import SafePrimeGenerator.generateRandomNonce
+import com.ionspin.kotlin.bignum.integer.BigInteger
+import com.ionspin.kotlin.bignum.integer.Sign
 import com.ionspin.kotlin.bignum.integer.toBigInteger
 
 object SchnorrServer {
@@ -9,9 +11,11 @@ object SchnorrServer {
     data class Keys(val privateKey: Int, val publicKey: Int)
 
     // Generate the challenge on the server
-    fun generateChallenge(): String {
+    fun generateChallenge(username: String): String {
+        val keyDerivation = KeyDerivationFactory.create()
         val randomNonce = generateRandomNonce()
-        return randomNonce.toString()
+        val hash = keyDerivation.hashSHA256("$username$randomNonce")
+        return BigInteger.fromByteArray(hash, Sign.POSITIVE).mod(SafePrimeGenerator.PRIME_2048).toString()
     }
 
     // Verify the client's response
