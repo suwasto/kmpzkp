@@ -1,6 +1,6 @@
 import SwiftUI
 import Shared
-import zkpschnoorproofs
+import zkpschnorrproofs
 
 struct ContentView: View {
     @State private var username: String = ""
