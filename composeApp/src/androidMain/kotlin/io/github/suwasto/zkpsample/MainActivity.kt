@@ -104,6 +104,7 @@ fun LoginScreen() {
                             val verifier = userMap[username]
                             if (verifier.isNullOrBlank()) {
                                 isLoading = false
+                                loginLog = "User not found"
                                 scope.launch {
                                     snackbarHostState.showSnackbar("User not found")
                                 }
@@ -112,7 +113,7 @@ fun LoginScreen() {
                             }
                             // fetch challenge from server
                             val challenge = SchnorrServer.generateChallenge(
-                                username
+                                verifier
                             )
                             delay(1000)
                             loginLog = "$loginLog\n$challenge\n\ngenerating proof..."
@@ -132,10 +133,12 @@ fun LoginScreen() {
                                     " response : ${proof.second}\nVerifying proof..."
                             delay(1000)
                             if (verifyProof) {
+                                loginLog = "$loginLog\nAuthenticated $username"
                                 scope.launch {
                                     snackbarHostState.showSnackbar("Authenticated $username")
                                 }
                             } else {
+                                loginLog = "$loginLog\npassword is incorrect"
                                 scope.launch {
                                     snackbarHostState.showSnackbar("password is incorrect")
                                 }
