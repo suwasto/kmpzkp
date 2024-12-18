@@ -91,7 +91,7 @@ struct ContentView: View {
         loginLog = "Fetching challenge..."
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             // server generate challenge
-            let challenge = SchnorrServer().generateChallenge(username: username)
+            let challenge = SchnorrServer().generateChallenge(verifier: verifier)
             
             // derive keys
             let generateKeys = SchnorrMobileClient().deriveKeys(username: username, password: password)

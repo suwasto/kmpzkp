@@ -11,10 +11,11 @@ object SchnorrServer {
     data class Keys(val privateKey: Int, val publicKey: Int)
 
     // Generate the challenge on the server
-    fun generateChallenge(username: String): String {
+    fun generateChallenge(verifier: String): String {
         val keyDerivation = KeyDerivationFactory.create()
         val randomNonce = generateRandomNonce()
-        val hash = keyDerivation.hashSHA256("$username$randomNonce")
+        val combined = (verifier + randomNonce).toList().shuffled().joinToString("")
+        val hash = keyDerivation.hashSHA256(combined)
         return BigInteger.fromByteArray(hash, Sign.POSITIVE).mod(SafePrimeGenerator.PRIME_2048).toString()
     }
 
