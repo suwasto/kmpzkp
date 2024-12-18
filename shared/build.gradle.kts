@@ -49,7 +49,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // put your Multiplatform dependencies here
-            implementation(projects.zkpschnoorproofs)
+            implementation(projects.zkpschnorrproofs)
         }
     }
 }
