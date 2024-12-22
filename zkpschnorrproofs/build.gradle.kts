@@ -7,7 +7,15 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    id("maven-publish")
 }
+
+group = "io.github.suwasto"
+version = "0.1.0"
+
+//publishing {
+//
+//}
 
 kotlin {
     androidTarget {
@@ -22,6 +30,7 @@ kotlin {
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
+        withSourcesJar(publish = false)
         browser {
             val rootDirPath = project.rootDir.path
             val projectDirPath = project.projectDir.path
