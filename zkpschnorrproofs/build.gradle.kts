@@ -57,6 +57,7 @@ kotlin {
                 }
             }
         }
+        publishLibraryVariants("release")
     }
 
     val xcf = XCFramework()

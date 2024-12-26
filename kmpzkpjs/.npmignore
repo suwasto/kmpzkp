@@ -1,0 +1,22 @@
+# Exclude unnecessary files from the package
+src/
+test/
+tests/
+coverage/
+build/
+node_modules/
+.nyc_output/
+.vscode/
+.idea/
+.DS_Store
+
+# Exclude Git-related files
+.git/
+.gitignore
+
+# Exclude local configuration
+.env
+.env.local
+
+# Exclude documentation files if not needed
+*.md

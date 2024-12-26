@@ -84,6 +84,8 @@ fun Application.module() {
             )
 
             call.respond(LoginResponse(
+                privateKey = generateKey.privateKey,
+                verifier = generateKey.publicKey,
                 challenge = challenge,
                 commitment = proof.first,
                 response = proof.second,
@@ -100,6 +102,8 @@ data class User(
 
 @Serializable
 data class LoginResponse(
+    val privateKey: String,
+    val verifier: String,
     val challenge: String,
     val commitment: String,
     val response: String,

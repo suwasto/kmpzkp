@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2016",              // Specify the JavaScript version to target
+    "module": "commonjs",            // Use CommonJS module system (as per your requirement)
+    "moduleResolution": "node",      // Resolve modules the same way Node.js does
+    "esModuleInterop": true,         // Allow interoperability with CommonJS modules
+    "outDir": "./dist",              // Directory where the compiled JavaScript will go
+    "rootDir": "./src",              // Root directory of your TypeScript files
+    "strict": true,                  // Enable all strict type-checking options
+    "skipLibCheck": true,            // Skip type checking of declaration files (optional)
+    "forceConsistentCasingInFileNames": true // Ensure consistent file name casing
+  },
+  "include": ["src/**/*.ts"],        // Include all TypeScript files in the src directory
+  "exclude": ["node_modules"]        // Exclude node_modules folder
+}

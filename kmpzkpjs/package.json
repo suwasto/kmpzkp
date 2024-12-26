@@ -1,0 +1,25 @@
+{
+  "name": "kmpzkp",
+  "version": "0.1.0",
+  "main": "dist/SchnorrClient.js",
+  "types": "dist/SchnorrClient.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": ["schnorr", "zkp", "typescript", "cryptography"],
+  "author": "Anang Suwasto",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "description": "Zero knowledge proofs implementation using schnorr protocol",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "big-integer": "^1.6.52"
+  },
+  "files": [
+    "dist/"
+  ]
+}
