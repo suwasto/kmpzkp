@@ -1,12 +1,51 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    id("com.vanniktech.maven.publish") version "0.30.0"
+}
+
+mavenPublishing {
+
+    coordinates(
+        groupId = "io.github.suwasto",
+        artifactId = "zkpschnorrproofs",
+        version = "0.1.0"
+    )
+
+    pom {
+        name.set("KMPZKP")
+        description.set("Kotlin Multiplatform library for Zero Knowledge Proofs using Schnorr proofs")
+        url.set("https://github.com/suwasto/kmpzkp")
+
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+
+        developers {
+            developer {
+                id.set("suwasto")
+                name.set("Anang Suwasto")
+                email.set("suwasto.anang@gmail.com")
+            }
+        }
+
+        scm {
+            connection.set("scm:git:git://github.com/suwasto/kmpzkp.git")
+            developerConnection.set("scm:git:ssh://github.com:suwasto/kmpzkp.git")
+            url.set("https://github.com/suwasto/kmpzkp")
+        }
+    }
+
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    signAllPublications()
 }
 
 kotlin {
@@ -18,23 +57,7 @@ kotlin {
                 }
             }
         }
-    }
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser {
-            val rootDirPath = project.rootDir.path
-            val projectDirPath = project.projectDir.path
-            commonWebpackConfig {
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(rootDirPath)
-                        add(projectDirPath)
-                    }
-                }
-            }
-        }
+        publishLibraryVariants("release")
     }
 
     val xcf = XCFramework()

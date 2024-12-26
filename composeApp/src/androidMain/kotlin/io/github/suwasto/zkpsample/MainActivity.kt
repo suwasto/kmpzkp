@@ -57,8 +57,6 @@ fun LoginScreen() {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
-
-
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
