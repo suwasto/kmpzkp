@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero-Knowledge Proof Authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        /* Sidebar styling */
+        #sidebar {
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        #sidebar h2 {
+            font-size: 1.5em;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #444;
+        }
+
+        #sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #sidebar ul li {
+            margin: 15px 0;
+        }
+
+        #sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        #sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Content styling */
+        #content {
+            margin-left: 270px; /* Space for sidebar */
+            padding: 30px;
+            width: 100%;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        h1, h2, h3 {
+            color: #4CAF50;
+        }
+
+        pre {
+            background-color: #333;
+            color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        code {
+            font-family: Consolas, monaco, monospace;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        .note {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 5px solid #4CAF50;
+            margin: 20px 0;
+        }
+
+        /* Adding some margin to improve readability */
+        h1, h2, h3, p {
+            margin-bottom: 20px;
+        }
+
+        /* Add responsive design for smaller screens */
+        @media (max-width: 768px) {
+            #sidebar {
+                width: 200px;
+            }
+
+            #content {
+                margin-left: 210px;
+            }
+        }
+
+        img {
+            width: 100%; /* Make the image take the full width of the screen */
+            height: auto; /* Maintain aspect ratio */
+            display: block; /* Remove bottom space under the image */
+        }
+        .container {
+            max-width: 1200px; /* Optional: limit the max width of the content */
+            margin: 0 auto; /* Center the container */
+            padding: 20px; /* Add some padding */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div id="sidebar">
+    <h2>Navigation</h2>
+    <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#usage">Usage</a></li>
+        <li><a href="#server">Server (Kotlin)</a></li>
+        <li><a href="#mobile-client">Mobile Client (Kotlin)</a></li>
+        <li><a href="#frontend-client">Frontend Client (JavaScript)</a></li>
+    </ul>
+</div>
+
+<!-- Content -->
+<div id="content">
+
+    <h1 id="introduction">Zero-Knowledge Proof Authentication</h1>
+
+    <section>
+        <h2>Introduction</h2>
+        <p>
+            Zero-Knowledge Proofs (ZKPs) provide a way for users to authenticate themselves without
+            revealing sensitive data such as passwords. This process involves proving knowledge of a
+            secret without directly sharing it. The authentication flow is composed of several
+            steps, each ensuring that the user's credentials remain secure. Below is an overview of
+            the ZKP authentication process, implemented using both Kotlin (for the mobile client)
+            and JavaScript (for the frontend client).
+        </p>
+        <p>
+            Zero-knowledge proofs are characterized by three essential properties:
+        </p>
+        <ul>
+            <li><strong>Completeness</strong>: If the statement is true, an honest verifier will be convinced by an honest prover.</li>
+            <li><strong>Soundness</strong>: A dishonest prover cannot convince the verifier of a false statement except with negligible probability.</li>
+            <li><strong>Zero Knowledge</strong>: The verifier learns nothing beyond the fact that the statement is true.</li>
+        </ul>
+        <p>
+            These properties make ZKPs particularly useful in scenarios where privacy and security are paramount.
+        </p>
+        <p>
+            The Schnorr protocol is a specific implementation of a zero-knowledge proof that allows a prover to demonstrate knowledge of a discrete logarithm. It is based on the hardness of the discrete logarithm problem, which is widely regarded as a secure foundation for cryptographic systems.
+        </p>
+        <p>The Schnorr protocol can be broken down into the following steps:</p>
+
+        <ol>
+            <li>
+                <strong>Setup</strong>:
+                <p>Let <code>p</code> be a large prime number, and <code>g</code> be a generator of a cyclic group <code>G</code> of order <code>q</code> (where <code>q</code> divides <code>p-1</code>).</p>
+                <p>The prover has a secret key <code>x</code> (the discrete logarithm) and computes the public key <code>y = g<sup>x</sup> mod p</code>.</p>
+            </li>
+            <li>
+                <strong>Commitment</strong>:
+                <p>The prover selects a random nonce <code>r</code> and computes the commitment:</p>
+                <pre><code>R = g<sup>r</sup> mod p</code></pre>
+                <p>The prover sends <code>R</code> to the verifier.</p>
+            </li>
+            <li>
+                <strong>Challenge</strong>:
+                <p>The verifier generates a random challenge <code>c</code> (often using a cryptographic hash function) and sends it to the prover.</p>
+            </li>
+            <li>
+                <strong>Response</strong>:
+                <p>The prover computes the response <code>s</code> as follows:</p>
+                <pre><code>s = r + cx mod q</code></pre>
+                <p>The prover sends <code>s</code> back to the verifier.</p>
+            </li>
+            <li>
+                <strong>Verification</strong>:
+                <p>The verifier checks the validity of the proof by verifying the equation:</p>
+                <pre><code>g<sup>s</sup> mod p &lt;?&gt; R · y<sup>c</sup> mod p</code></pre>
+                <p>If the equation holds, the verifier is convinced that the prover knows the secret <code>x</code>.</p>
+            </li>
+        </ol>
+        <p>The Schnorr protocol has several practical applications in the field of cryptography:</p>
+
+        <ol>
+            <li>
+                <strong>Digital Signatures</strong>:
+                <p>Schnorr signatures provide a compact and efficient alternative to traditional signature schemes. They allow for signature aggregation, which can significantly reduce the size of blockchain transactions. This is particularly beneficial in environments where bandwidth and storage are limited.</p>
+            </li>
+            <li>
+                <strong>Authentication</strong>:
+                <p>The protocol can be used in authentication systems where users can prove their identity without revealing their credentials. This enhances security by minimizing the risk of credential theft.</p>
+            </li>
+            <li>
+                <strong>Cryptocurrency</strong>:
+                <p>Many cryptocurrencies, including Bitcoin, are exploring the integration of Schnorr signatures to enhance privacy and scalability. By using Schnorr signatures, transactions can be aggregated, allowing multiple transactions to be combined into a single signature, thereby reducing the overall data size on the blockchain.</p>
+            </li>
+            <li>
+                <strong>Privacy-Preserving Protocols</strong>:
+                <p>The Schnorr protocol can be utilized in various privacy-preserving applications, such as confidential transactions and secure voting systems, where it is crucial to prove knowledge of a secret without revealing the secret itself.</p>
+            </li>
+        </ol>
+    </section>
+
+    <section id="usage">
+        <h2>Usage</h2>
+
+        <h3>Sample Usage for Authentication</h3>
+
+        <img src="flow.png" alt="Description of the image">
+
+        <h4>Registration Flow</h4>
+        <ol>
+            <li>The client sends a username and verifier to the server.</li>
+            <li>The server saves the username and verifier in the database.</li>
+        </ol>
+
+        <h4>Challenge Generation</h4>
+        <ol>
+            <li>The client requests a challenge by sending the username to the server.</li>
+            <li>The server checks if the username exists, generates a challenge, and saves it to the
+                database.
+            </li>
+            <li>The server returns the generated challenge to the client.</li>
+        </ol>
+
+        <h4>Proof Verification</h4>
+        <ol>
+            <li>The client generates a proof using the challenge and private key. The proof returns
+                a pair of strings: commitment and response.
+            </li>
+            <li>The client sends the username, commitment, and response to the server.</li>
+            <li>The server verifies the proof using the commitment, response, user verifier (already
+                in the database), and challenge (already in the database).
+            </li>
+            <li>If the verification returns true, the user is authenticated.</li>
+        </ol>
+
+    </section>
+
+    <section id="server">
+        <h3>Server (Kotlin)</h3>
+        <p>
+            Add the ZKP library dependency to your server project.
+        </p>
+        <pre><code>implementation("io.github.suwasto:zkpschnorrproofs:0.1.0")</code></pre>
+        <h4>Generating challenge</h4>
+        <ol>
+            <li>send username from client</li>
+            <li>fetch verifier from database if exist, if not exist return username not registered</li>
+            <li>generate challenge using below function and return to client</li>
+        </ol>
+        <pre><code>val challenge = SchnorrServer.generateChallenge(verifier)</code></pre>
+        <div class="note">
+            <p><strong>Note:</strong> Make sure to set expiry or one time usage mechanism for generated challenge to prevent it to be reused</p>
+        </div>
+        <h4>Verifying proof</h4>
+        <ol>
+            <li>client generate proof from challenge and private key</li>
+            <li>client send username, commitment, and response to server</li>
+            <li>verify proof using below function and return the result to client</li>
+        </ol>
+        <pre><code>val isAuthenticated = SchnorrServer.verifyProof(commitment, verifier, challenge, response)</code></pre>
+        <div class="note">
+            <p><strong>Note:</strong> fetch verifier and challenge from server database using username</p>
+        </div>
+    </section>
+
+    <section id="mobile-client">
+        <h3>Mobile Client (Kotlin)</h3>
+        <p>
+            Add the ZKP library dependency to your <strong>kotlin multiplatform</strong> project.
+        </p>
+        <pre><code>implementation("io.github.suwasto:zkpschnorrproofs:0.1.0")</code></pre>
+        <h4>Registration Flow</h4>
+        <ol>
+            <li>enter username and password</li>
+            <li>use below code to derive keys and send username and public key (verifier) to server to be saved</li>
+        </ol>
+        <pre><code>
+val keys = SchnorrMobileClient.deriveKeys(username, password)
+val privateKey = keys.privateKey
+val verifier = keys.publicKey
+            </code></pre>
+
+        <h4>Login Flow</h4>
+        <ol>
+            <li>enter username and password</li>
+            <li>request challenge from server by sending username</li>
+            <li>use below code to generate proof and send username, commitment and response to server</li>
+        </ol>
+        <pre><code>
+// generate keys from username, password
+val keys = SchnorrMobileClient.deriveKeys(username, password)
+val privateKey = keys.privateKey
+
+// generate proof
+val proof = SchnorrMobileClient.generateProof(privateKey, challenge)
+val commitment = proof.first
+val response = proof.second
+            </code></pre>
+    </section>
+
+    <section id="frontend-client">
+        <h3>Frontend Client (JavaScript)</h3>
+        <ol>
+            <li>Install the <code>kmpzkp</code> library via npm:
+                <pre><code>npm install kmpzkp</code></pre>
+            </li>
+            <li>Import the client class in your frontend JavaScript code:
+                <pre><code>const SchnorrClient = require("kmpzkp");</code></pre>
+            </li>
+        </ol>
+
+        <h4>Registration Flow</h4>
+        <ol>
+            <li>enter username and password</li>
+            <li>use below code to derive keys and send username and public key (verifier) to server to be saved</li>
+        </ol>
+        <pre><code>
+const keys = SchnorrClient.deriveKeys(username, password);
+const privateKey = keys.privateKey;
+const verifier = keys.publicKey;
+            </code></pre>
+
+        <h4>Login Flow</h4>
+        <ol>
+            <li>enter username and password</li>
+            <li>request challenge from server by sending username</li>
+            <li>use below code to generate proof and send username, commitment and response to server</li>
+        </ol>
+        <pre><code>
+// generate keys from username, password
+const keys = SchnorrClient.deriveKeys(username, password);
+const privateKey = keys.privateKey;
+
+// generate proof
+const proof = SchnorrClient.generateProof(privateKey, challenge);
+const commitment = proof.first;
+const response = proof.second;
+            </code></pre>
+
+    </section>
+
+</div>
+
+</body>
+</html>
