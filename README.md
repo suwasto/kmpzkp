@@ -1,26 +1,45 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop, Server.
+# Zero-Knowledge Proof Authentication
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+This project demonstrates the implementation of Zero-Knowledge Proof (ZKP) authentication using the Schnorr protocol. ZKPs enable secure authentication by proving knowledge of a secret without revealing it.
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Features
 
-* `/server` is for the Ktor server application.
+- **Privacy-Preserving Authentication**: Authenticate without sharing sensitive data.
+- **Platform Compatibility**: Includes Kotlin-based mobile and server implementations, and a JavaScript frontend.
+- **Schnorr Protocol**: Utilizes a secure, efficient ZKP protocol based on discrete logarithms.
 
-* `/shared` is for the code that will be shared between all targets in the project.
-  The most important subfolder is `commonMain`. If preferred, you can add code to the platform-specific folders here too.
+## Overview
 
+### Key Properties of Zero-Knowledge Proofs
+1. **Completeness**: The verifier is convinced if the statement is true.
+2. **Soundness**: False statements cannot convince the verifier.
+3. **Zero Knowledge**: No additional information is revealed.
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+### Authentication Flow
+1. **Register**: User credentials generate a verifier stored on the server.
+2. **Challenge**: The server issues a random challenge.
+3. **Proof**: The client generates a proof based on the challenge and private key.
+4. **Verification**: The server validates the proof.
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
+## Live Documentation
+For a detailed explanation, visit the [documentation here](https://suwasto.github.io/kmpzkp/).
 
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.
+## Usage
+
+### Registration Flow
+1. The client sends the `username` and `verifier` to the server.
+2. The server stores these securely.
+
+### Challenge-Response Flow
+1. The client requests a challenge by providing a username.
+2. The server generates and sends a challenge.
+3. The client computes a proof and sends it to the server.
+4. The server verifies the proof to authenticate the user.
+
+### Applications
+- **Digital Signatures**: Secure and efficient signing.
+- **Authentication**: Privacy-preserving identity verification.
+- **Cryptocurrency**: Enhancing privacy and scalability.
+
+## License
+This project is licensed under the [Apache License 2.0](LICENSE).
