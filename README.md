@@ -2,7 +2,7 @@
 
 This project demonstrates the implementation of Zero-Knowledge Proof (ZKP) authentication using the Schnorr protocol. ZKPs enable secure authentication by proving knowledge of a secret without revealing it.
 
-> :warning: this code is experimental only has not been used in any production code.
+> :warning: this code is experimental only and has not been used in any production code.
 
 ### Authentication Flow
 1. **Register**: User credentials generate a verifier stored on the server.
